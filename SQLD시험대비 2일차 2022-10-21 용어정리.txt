@@ -1,0 +1,159 @@
+***용어정리
+
+
+
+**테이블 생성 : 
+CREATE TABLE 테이블명(
+	데이터타입 VARCHAR2(50)
+	데이터타입 VARCHAR2(50)
+	숫자타입 NUNBER(7)
+	날짜타입 DATE	
+	);	
+
+
+VARCHAR : 문자형
+
+VARCHAR2 : 오라클에서 사용하는 문자형, 2를 붙여준다.
+
+( ) : 괄호안의 숫자는 byte단위
+
+byte : 알파벳(한글자)-1byte / 한글-캐릭터셋에 따라 2-3byte가 될 수있기에 잘 고려하여 작성
+
+NUMBER : 2byte-10자리 / 3byte-100자리 / 4byte-1000자리 . . . 
+
+REGIST DATE(REG_DATE) : '등록된 날짜' 라서 DATE를 붙여준다.
+
+row : 행
+
+테이블의 전체내용 조회 : SELECT * FROM + 테이블명 + n ;
+
+
+AVG : 평균값 / MAX : 최대값 / MIN : 최소값 / SUM : 합계 / ASC : 오름차순 / DESC : 내림차순
+
+MODIFY : 변경 / DROP : 삭제 / TRUNCATE : 데이터삭제 / ROLLBACK : 이전상태로 돌리기 / SET : 셋팅
+
+DISTINCT : 중복되는것을 하나로 보는것 / 
+
+오름차순 : SELECT * FROM + 테이블명 + ORDER BY + REG_DATE + ASC;
+
+내림차순 : SELECT * FROM + 테이블명 + ORDER BY + REG_DATE + DESC;
+
+원하는 행을 그룹핑 해서 카운트를 집계 : SELECT + 원하는행이름, COUNT(*) FROM + 테이블명 + GROUP BY + 원하는행이름동일;
+
+
+**ALTER
+
+테이블에 데이터타입 문자형(20)으로 추가 : ALTER TABLE 테이블명 ADD (데이터타입 VARCHAR2(20)); 
+
+테이블에 데이터타입 문자형(50)으로 변경 : ALTER TALBLE 테이블명 MODYFI (데이터타입 VARCHAR(50));
+
+테이블에 데이터타입 숫자형(2)으로 변경 : ALTER TABLE 테이블명 MODIFY (데이터타입 NUMBER(2));
+
+테이블 삭제 : ALTER TABLE 테이블명 DROP (데이터타입);
+
+**DROP : 생성된 테이블 삭제
+
+테이블 삭제 : DROP TABLE 테이블명;
+
+테이블 안의 데이터 전체 삭제 : TRUNCATE TABLE 테이블명;
+ 
+**INSERT
+
+데이터 삽입 쿼리 : INSERT INTO 테이블명 VALUES ('오라클','DB',50,'20221021','YYYYMMDD'); 
+		   INSERT INTO 테이블명 (데이터타입, 데이터타입) VALUES ('넣고싶은값',42);
+
+ex. INSERT INTO NETFLIX VALUES ('응답하라 1988', '드라마', 35, '2022-10-21','YYYYMMDD');
+
+
+COMMIT; 필수*****
+
+**UPDATE
+
+이름이있는 넣은값의 숫자형데이터 타입의 수를 변경(UPDATE) : UPDATE 테이블명 SET 숫자형데이터타입 = 70 WHERE 문자형데이터타입 = '넣은값의이름';
+
+ex.나의아저씨라는 데이터값의 카테고리를 1위드라마라고 변경하고 날짜도 바꾸는부문 : UPDATE NETFLIX SET CATEGORY = '1위 드라마', REG_DATE = TO_DATE('20201021','YYYYMMDD') WHERE VIDEO_NAME = '나의 아저씨';
+
+**DELETE : 원하는 데이터만 삭제
+
+타입안의 값이름을 제거 : DELETE FROM 테이블명 n WHERE 데이터타입 = '타입안의 값이름';
+
+테이블의 데이터타입행에 VALUES값을가진 50보다 작은 데이터 삭제 : DELETE FROM 테이블명 n 데이터타입 = '타입안의 값이름' AND 데이터타입 < 50;
+
+값1과 값2라는 데이터만 삭제 : DELETE FROM 테이블명 WHERE 데이터타입 IN ('값1','값2');
+
+DELETE FROM 테이블명 n ; : 테이블 안의 모든 데이터 삭제
+
+**WHERE
+
+데이터타입 안에서 '값'이라는 row만을 출력 : SELECT * FROM 테이블명 n WHERE 데이터타입 = '값';
+
+'값'을 제외한 모든 row를 출력 : SELECT * FROM 테이블명 n WHERE 데이터타입 <> '값';
+
+데이터타입이 50인 테이블의 row출력 : SELECT * FROM 테이블명 n WHERE 데이터타입 = 50;
+
+데이터타입이 50이 아닌 테이블의 row출력 : SELECT * FROM 테이블명 n WHERE 데이터타입 <>50;
+
+보고싶은 데이터타입들을 골라서 출력 할 수 있는것 : SELECT 데이터타입, 데이터타입, 데이터타입 FROM 테이블명 n ;
+
+최근 한달 동안의 데이터를 출력 : SELECT * FROM 테이블명 n WHERE REG_DATE > SYSDATE-30;
+
+최근 한달 전의 데이터를 출력 : SELECT * FROM 테이블명 n WHERE REG_DATE < SYSDATE-30;
+
+- 화살표 차이
+
+**DISTINCT
+
+중복되는 데이터를 하나로만 보고싶을 때 : SELECT DISTINCT 데이터타입 FROM 테이블명 n ;
+
+원하는 카테고리의 row값을 보고싶을 때 : SELECT * FROM 테이블명 WHERE CATEGORY = '데이터값';
+
+원하는 카테고리의 row값들이 아닌 카테고리를 보고싶을 때 : SELECT * FROM 테이블명 WHERE CATEGORY NOT IN('데이터값1','데이터값2');
+
+원하는 카테고리의 row값들을 카테고리를 보고싶을 때 : SELECT * FROM 테이블명 WHERE CATEGORY IN('데이터값1','데이터값2');
+
+범위조건 70안으로 잡히는 데이터를 보고싶을 때 : SELECT * FROM 테이블명 WHERE VIEW_CNT < 70;
+
+범위조건 70을 포함하거나, 안으로 잡히는 데이터를 보고싶을 때 : SELECT * FROM 테이블명 WHERE VIEW_CNT <= 70;
+
+원하는 날짜 안으로 등록된 데이터를 조회 : SELECT * FROM 테이블명 WHERE REG_DATE < TO_DATE('20221021','YYYYMMDD');
+
+데이터타입 칼럼이 70보다 작은 데이터를 셀렉트 : SELECT * FROM 테이블명 WHERE CATEGORY = 'VALUES값' AND VIEW_CNT < 70;
+
+데이터타입이 애니메이션이고 REG_DATE가 2021년보다 더 전인 데이터가 조회되는것 : SELECT * FROM 테이블명 WHERE CATEGORY = '애니메이션' AND REG_DATE < TO_DATE('20210101','YYYYMMDD');
+
+애니메이션인 데이터는 모두 출력이되며 VIEW_CNT가 70보다 작은 데이터들이 같이 출력 : SELECT * FROM 테이블명 WHERE CATEGORY = '애니메이션' OR VIEW_CNT < 70;
+
+데이터값이 애니거나 영화인 데이터 출력 : SELECT * FROM 테이블명 WHERE CATEGORY = '애니' OR CATEGORY = '영화';
+=
+SELECT * FROM 테이블명 WHERE CATEGORY IN ('애니','영화'); 와 동일
+
+**LIKE 조건절 : % 의 위치가 문자의 뒤에있을때, 앞에있을떄 = 첫머리글자와 마지막글자로 시작, 끝나는 데이터를 출력하는방식.
+
+첫 글짜가 '미'로 시작되는 데이터를 조회 : SELECT * FROM 테이블명 WHERE VIDEO_NAME LIKE '미%';
+
+첫 글짜가 '미'로 끝나는 데이터를 조회 : SELECT * FROM 테이블명 WHERE VIDEO_NAME LIKE '%미';
+
+가운데에 있는 작성문자를 가진 데이터를 조회  : SELECT * FROM 테이블명 WHERE VIDEO_NAME LIKE '%의%';
+
+VIEW_CNT에 60보다 크고 70보다 작은 데이터를 조회 : SELECT * FROM 테이블명 WHERE VIEW_CNT >=60 AND VIEW_CNT <=70;
+=
+위와 동일한 의미이다. 60보다 크고 70보다 작음.
+SELECT * FROM NETFLIX WHERE VIEW_CNT BETWEEN 60 AND 70;
+
+**GROUP BY : 그룹핑 집계
+
+CATEGORY 별로 그룹핑하여 카운트를 집계 : SELECT CATEGORY, COUNT(*) FROM 테이블명 GROUP BY CATEGORY;
+
+CATEGORY 별로 조회수의 합계가 나오는것을 확인 : SELECT CATEGORY, SUM(VIEW_CNT) FROM 테이블명 GROUP BY CATEGORY;
+
+CATEGORY 별로 조회수가 가장 많은값이 무엇인지 MAX값을 구하는 SQL : SELECT CATEGORY, MAX(VIEW_CNT) FROM 테이블명 GROUP BY CATEGORY;
+
+MAX값이 가장 큰 CATEGORY부터 내림차순정렬 : SELECT CATEGORY, MAX(VIEW_CNT) FROM 테이블명 GROUP BY CATEGORY ORDER BY MAX(VIEW_CNT) DESC;
+
+MIN(최소값) 구하기 : SELECT CATEGORY, MIN(VIEW_CNT) FROM 테이블명 GROUP BY CATEGORY;
+
+CATEGORY의 최대값과 최소값 구하기 : SELECT CATEGORY, MAX(VIEW_CNT), MIN(VIEW_CNT) FROM 테이블명 GROUP BY CATEGORY;
+
+조회수의 평균값을 구하는SQL : SELECT CATEGORY, AVG(VIEW_CNT) FROM 테이블명 GROUP BY CATEGORY;
+
+
