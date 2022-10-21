@@ -1,0 +1,320 @@
+**2022-10-20 SQLD 시험 대비
+
+*STEP1
+
+데이터베이스 : 데이터를 저장하는 공간
+
+데이터베이스에 데이터를 저장할때, 테이블의 형태로 저장을 한다. 
+
+데이터에 접속했을때 데이터가 싹다 나오는데 정보유출 사건이 그 때 나온거라고함.
+
+------------------
+
+*STEP2
+
+ex.하우스
+집안의 방 : 테이블
+각각의 방 : 회원, 결제, 상품
+
+쇼핑몰을 예를들면 - 이벤트 프로모션 쿠폰 고객센터 리뷰 ... 등등의 데이터베이스가 있다.
+
+컬럼 : 아이디, 패스워드, 이름, 전화번호, 이메일, 정도가 저장된다 / 모델링에서는 어트리뷰트라고 말한다.
+
+row : 한사람 한사람의 행 / 모델링에서는 record 나 tuple이라고 표현하기도 한다.
+ 
+relation : 회원 ->(작성한다라는 관계)<-  리뷰 , 회원 ->(등급을 부여한다라는 관계)<- 회원 ....등등을 일컬음.
+
+
+**데이터베이스에 데이터를 저장할때, 테이블의 형태로 저장을 한다. 그리고 그 테이블은 컬럼과 로우로 이루어진다.
+------------------
+
+*STEP3    CREATE
+
+
+테이블을 생성할 때 어떤 컬럼으로 구성할 것인지를 같이 정해줘야하는데,
+텍스트 VARCHAR , 숫자 NUMBER , 날짜 DATE 타입으로 컬럼을 만들어준다.
+
+NOT NULL : 이 컬럼은 절대 빈 값일 수 없다라고 제한을 두는것.
+ex.학생이라는 테이블이 있다라고 했을때 학번이 부여되지 않은 학생은 사실상 학교학생이 아닌것이다. 그럴경우 학번 컬럼을 NOT NULL로 정해줄 수 있다.
+
+DEFAULT : 컬럼에 저장되는 데이터의 기본 값을 정해주는것.
+ex.교수라는 테이블에 퇴직여부라는 컬럼이 있고 퇴직을 했으면Y, 재직중이면N으로 입력을 한다고 가정했을 때,
+디폴트값을 N으로 지정해주면 퇴직여부라는 컬럼에 별도의 데이터가 입력되지 않을 경우 퇴직여부는 N으로 저장이 되게 된다.
+
+PRIMARY KEY : 테이블 내에서 중복 되어서는 안되는 데이터가 저장될 컬럼을 Primary Key로 정의한다. 나만이 가지고 있는 유니크 한 값
+
+COMMENT : 테이블이나 컬럼에 대해 좀더 상세한 설명을 메모해 두는 기능, 보통 테이블 명이나 컬럼 명을 정할 때에 길이가 너무 길면 사용하기가 좀 번거로워 지기 때문에 보통은 적당한 약어로 명명해주는 경우가 많은데
+이럴때 다른사람도 보고 알 수 있도록 코멘트를 달아놓는것이다.
+
+*CREATE 테이블명(
+컬럼1 데이터타입(SIZE) NOT NULL,
+컬럼2 데이터타입(SIZE) DEFAULT'기본값',
+
+
+ex. NETPLIX TABLE
+
+*CREATE TABLE NETFLIX (
+
+    VIDEO_NAME VARCHAR2(50),     
+    CATEGORY VARCHAR2(30),
+    VIEW_CNT NUMBER(7),
+    REG_DATE DATE
+    );
+    
+SELECT * FROM NETFLIX;
+
+VARCHAR : 문자가 들어갈때!
+VARCHAR2 : 오라클에서는 VARCHAR타입을 VARCHAR2로 해준다.
+VARCHAR/VARCHAR2옆에 붙는 괄호안의 숫자(byte) : 알파벳 같은 경우에는 한 글자가 1byte, 그런데 한글 같은 경우에는 캐릭터 셋에 따라서 2byte가 될수가있고, 3byte가 될수도 있기 때문에 잘 고려해서 여유있게 지정을 해 주는게 좋다.
+NUMBER : 10자리 수면은 2개,2바이트/ 100자리수면 3바이트라고 저장할수있는데, 1백만 뷰 까지 저장하는거면 7자리가 된다.
+REGIST DATE(줄여서REG_DATE) : '등록된 날짜'이기때문에 DATE를 붙여준다.
+
+컨트롤을 누른상태에서 테이블명을 클릭해주면 상세한 스키마(내역)를 볼수있는데, 정해준 사이즈까지 다 볼 수있다.
+
+
+
+--------------------------------------------------------------------------------------------------------
+
+
+**2022-10-21 SQLD 시험 대비
+
+ALTER 공부
+
+-- netflix table 전체조회
+SELECT * FROM NETFLIX n ;
+
+
+-- netflix table에 CAST_MEMBER테이블 문자형(20)으로 추가
+ALTER TABLE NETFLIX ADD(CAST_MEMBER VARCHAR2(20));
+
+-- 변경
+
+-- netflix table에 CAST_MEMBER테이블 문자형(50)으로 변경
+
+ALTER TABLE NETFLIX MODIFY (CAST_MEMBER VARCHAR2(50));
+
+-- netflix table에 CAST_MEMBER테이블 숫자형으로 변경
+
+ALTER TABLE NETFLIX MODIFY (CAST_MEMBER NUMBER(2));
+
+-- netflix table 삭제
+
+ALTER TABLE NETFLIX DROP (CAST_MEMBER);
+
+
+-- ----------
+-- DROP 
+ 
+
+CREATE TABLE CODELION(
+    COL1 VARCHAR2(3),
+    COL2 VARCHAR2(3)
+);
+
+SELECT * FROM CODELION;
+
+INSERT INTO CODELION VALUES ('AAA','BBB');
+INSERT INTO CODELION VALUES ('CCC','DDD');
+
+COMMIT;
+
+DROP TABLE CODELION;
+
+
+-- TRUNCATE : 모든 데이터를 삭제한다. 복구 불가능.
+
+CREATE TABLE CODELION(
+    COL1 VARCHAR2(3),
+    COL2 VARCHAR2(3)
+);
+
+INSERT INTO CODELION VALUES ('AAA','BBB');
+INSERT INTO CODELION VALUES ('CCC','DDD');
+
+COMMIT;
+
+SELECT * FROM CODELION;
+-- 테이블만 남기고 안에있는 데이터를 모두 없애주는것
+TRUNCATE TABLE CODELION;
+SELECT * FROM CODELION;
+
+-- ----------------------
+
+-- INSERT 쿼리 : 데이터를 삽입하는 쿼리임.
+
+
+SELECT * FROM NETFLIX n ;
+
+INSERT INTO NETFLIX VALUES ('나의 아저씨','드라마',50,'20221021','YYYYMMDD');
+
+COMMIT;
+
+INSERT INTO NETFLIX (VIDEO_NAME, VIEW_CNT) VALUES ('나의 아저씨', 42);
+
+ROLLBACK;
+
+INSERT INTO NETFLIX VALUES ('응답하라 1988', '드라마', 35, '2022-10-21','YYYYMMDD');
+INSERT INTO NETFLIX VALUES ('나의 아저씨','드라마',50,'20221021','YYYYMMDD');
+INSERT INTO NETFLIX VALUES ('시그널','드라마',50,'20221021','YYYYMMDD');
+INSERT INTO NETFLIX VALUES ('이태원 클라쓰', '드라마', 30, '2022-10-21','YYYYMMDD');
+INSERT INTO NETFLIX VALUES ('미스터 션샤인', '드라마', 22, '2022-10-21','YYYYMMDD');
+-- -------
+
+-- UPDATE 쿼리
+SELECT * FROM NETFLIX n;
+UPDATE NETFLIX SET VIEW_CNT = 70 WHERE VIDEO_NAME = '이태원 클라쓰';
+COMMIT;
+
+
+UPDATE NETFLIX SET CATEGORY = '1위 드라마', REG_DATE = TO_DATE('20201021','YYYYMMDD') WHERE VIDEO_NAME = '나의 아저씨';
+
+-- -------------------
+
+SELECT * FROM NETFLIX n ;
+
+UPDATE NETFLIX SET VIEW_CNT = 70 WHERE VIDEO_NAME = '미스터 션샤인';
+COMMIT;
+
+-- ------------------
+--DELETE : 내가 원하는 데이터만 삭제한다
+SELECT * FROM NETFLIX n ;
+
+DELETE FROM NETFLIX n WHERE VIDEO_NAME = '나의 아저씨';
+COMMIT;
+
+-- 조건절을 조금더 길게 해본다.
+-- 넷플릭스 테이블의 VIDEO_NAME행에 나의 아저씨라는 이름을가진 50보다 작은 데이터를 삭제한다는 뜻.
+DELETE FROM NETFLIX n WHERE VIDEO_NAME = '나의 아저씨' AND VIEW_CNT < 50;
+
+-- 되돌리기인데 이렇게 데이터를 삭제했을때는 되돌리기가 어렵다.
+-- ROLLBACK;
+
+-- 미스터 션샤인, 나의 아저씨 데이터만 삭제
+DELETE FROM NETFLIX WHERE VIDEO_NAME IN ('미스터 션샤인', '나의 아저씨');
+
+DELETE FROM NETFLIX n ; -- 모든 데이터 삭제
+
+-- -----------------------------------------
+
+-- SELECT 쿼리
+-- SELECT 다음에 오는 컬럼은 하나 이상은 기재가 되어있어야 하고
+-- SELECT 다음에 바로 FROM이 오면 어루가 발생하게된다.
+
+SELECT * FROM NETFLIX n ;
+
+-- 조건절 WHERE을 쓰고 VIDEO_NAME이 나의 아저씨인 row를 SELECT를 작성해주면
+-- 조건절 WHERE을 쓰고 VIDEO_NAME이 나의 아저씨인 row의 데이터가 SELECT되게 되는데
+-- 이런 조건을 equal 조건이라고 한다. 
+SELECT * FROM NETFLIX n WHERE VIDEO_NAME = '나의 아저씨';
+
+-- 나의 아저씨가 아닌 row를 SELECT 하고싶다면 하위대로 작성해주면 된다.
+SELECT * FROM NETFLIX n WHERE VIDEO_NAME <> '나의 아저씨';
+
+-- -------------------------------------------
+-- VIEW_CNT가 70인 넷플릭스테이블의 ROW
+SELECT * FROM NETFLIX n WHERE VIEW_CNT = 50;
+
+-- VIEW_CNT가 70이 아닌 넷플릭스테이블의 ROW
+SELECT * FROM NETFLIX n WHERE VIEW_CNT <> 70;
+-- -------------------------------------------
+--
+-- 보고싶은 행만 볼수있는 부문인데 여기서 행의 이름을 더 넣거나 더 빼서 SELECT하면 
+-- 질의 결과에서 확인할수있다.
+SELECT VIDEO_NAME, CATEGORY, VIEW_CNT FROM NETFLIX n ;
+
+
+-- 화살표 잘 보도록!-----------------------------------
+-- 최근 한달 동안인 데이터를 출력하고 싶다면!
+SELECT * FROM NETFLIX n WHERE REG_DATE > SYSDATE-30;
+
+-- 최근 한달 전인 데이터를 출력하고 싶다면!
+SELECT * FROM NETFLIX n WHERE REG_DATE < SYSDATE-30;
+-- --------------------------------------------------
+
+-- 카테고리처럼 중복되는 데이터를 하나로만 보고싶으면 DISTINCT를 카테고리앞에 붙여준다.
+SELECT DISTINCT CATEGORY FROM NETFLIX n ;
+
+
+-- ---------------------------------------------------
+--WHERE 절
+
+-- 유튜브에서 따온건데 안되는것같다.
+INSERT INTO NETFLIX VALUES ('진격의 거인','애니메이션', ROUND(DBMS_RANDOM.VALUE(0, 100)), SYSDATE-ROUND(DBMS_RANDOM.VALUE(0, 100)));
+INSERT INTO NETFLIX VALUES ('도라에몽','애니메이션', ROUND(DBMS_RANDOM.VALUE(0, 100)), SYSDATE-ROUND(DBMS_RANDOM.VALUE(0, 100)));
+INSERT INTO NETFLIX VALUES ('천공의 성 라퓨타','애니메이션', ROUND(DBMS_RANDOM.VALUE(0, 100)), SYSDATE-ROUND(DBMS_RANDOM.VALUE(0, 100)));
+INSERT INTO NETFLIX VALUES ('귀를 기울이면','애니메이션', ROUND(DBMS_RANDOM.VALUE(0, 100)), SYSDATE-ROUND(DBMS_RANDOM.VALUE(0, 100)));
+INSERT INTO NETFLIX VALUES ('모노노케 히메','애니메이션', ROUND(DBMS_RANDOM.VALUE(0, 100)), SYSDATE-ROUND(DBMS_RANDOM.VALUE(0, 100)));
+INSERT INTO NETFLIX VALUES ('하트시그널','예능', ROUND(DBMS_RANDOM.VALUE(0, 100)), SYSDATE-ROUND(DBMS_RANDOM.VALUE(0, 100)));
+INSERT INTO NETFLIX VALUES ('연애의 참견','예능', ROUND(DBMS_RANDOM.VALUE(0, 100)), SYSDATE-ROUND(DBMS_RANDOM.VALUE(0, 100)));
+INSERT INTO NETFLIX VALUES ('효리네 민박','예능', ROUND(DBMS_RANDOM.VALUE(0, 100)), SYSDATE-ROUND(DBMS_RANDOM.VALUE(0, 100)));
+INSERT INTO NETFLIX VALUES ('미스트롯','예능', ROUND(DBMS_RANDOM.VALUE(0, 100)), SYSDATE-ROUND(DBMS_RANDOM.VALUE(0, 100)));
+INSERT INTO NETFLIX VALUES ('아는 형님','예능', ROUND(DBMS_RANDOM.VALUE(0, 100)), SYSDATE-ROUND(DBMS_RANDOM.VALUE(0, 100)));
+INSERT INTO NETFLIX VALUES ('리틀 포레스트','영화', ROUND(DBMS_RANDOM.VALUE(0, 100)), SYSDATE-ROUND(DBMS_RANDOM.VALUE(0, 100)));
+INSERT INTO NETFLIX VALUES ('건축학개론','영화', ROUND(DBMS_RANDOM.VALUE(0, 100)), SYSDATE-ROUND(DBMS_RANDOM.VALUE(0, 100)));
+INSERT INTO NETFLIX VALUES ('인터스텔라','영화', ROUND(DBMS_RANDOM.VALUE(0, 100)), SYSDATE-ROUND(DBMS_RANDOM.VALUE(0, 100)));
+INSERT INTO NETFLIX VALUES ('광해','영화', ROUND(DBMS_RANDOM.VALUE(0, 100)), SYSDATE-ROUND(DBMS_RANDOM.VALUE(0, 100)));
+INSERT INTO NETFLIX VALUES ('어바웃타임','영화', ROUND(DBMS_RANDOM.VALUE(0, 100)), SYSDATE-ROUND(DBMS_RANDOM.VALUE(0, 100)));
+INSERT INTO NETFLIX VALUES ('우리의 지구','다큐', ROUND(DBMS_RANDOM.VALUE(0, 100)), SYSDATE-ROUND(DBMS_RANDOM.VALUE(0, 100)));
+INSERT INTO NETFLIX VALUES ('인사이드 빌게이츠','다큐', ROUND(DBMS_RANDOM.VALUE(0, 100)), SYSDATE-ROUND(DBMS_RANDOM.VALUE(0, 100)));
+INSERT INTO NETFLIX VALUES ('길 위의 셰프들','다큐', ROUND(DBMS_RANDOM.VALUE(0, 100)), SYSDATE-ROUND(DBMS_RANDOM.VALUE(0, 100)));
+INSERT INTO NETFLIX VALUES ('죽어도 선덜랜드','다큐', ROUND(DBMS_RANDOM.VALUE(0, 100)), SYSDATE-ROUND(DBMS_RANDOM.VALUE(0, 100)));
+INSERT INTO NETFLIX VALUES ('별나라 동물들','다큐', ROUND(DBMS_RANDOM.VALUE(0, 100)), SYSDATE-ROUND(DBMS_RANDOM.VALUE(0, 100)));
+
+COMMIT;
+
+SELECT * FROM NETFLIX WHERE CATEGORY = '애니메이션';
+
+-- 애니메이션과 영화인 카테고리를 띄운다.
+SELECT * FROM NETFLIX WHERE CATEGORY IN ('애니메이션','영화');
+-- 애니메이션과 영화가 아닌 카테고리를 띄운다.
+SELECT * FROM NETFLIX WHERE CATEGORY NOT IN('애니메이션','영화');
+-- 범위조건 70안으로 잡히는 데이터
+SELECT * FROM NETFLIX WHERE VIEW_CNT < 70;
+-- 범위조건 70을 포함하면서 작은 데이터
+SELECT * FROM NETFLIX WHERE VIEW_CNT <= 70;
+-- 20210101 안으로 등록된 데이터를 조회.
+SELECT * FROM NETFLIX WHERE REG_DATE < TO_DATE('20210101','YYYYMMDD');
+--여기서도 작거나 같다 크거나 같다는 작성이 가능하다.--
+
+-- 조건절을 두개이상 작성하는 방법! AND조건절!
+-- VIEW_CNT컬럼이 70보다 작은 데이터를 셀렉트 하라는뜻
+SELECT * FROM NETFLIX WHERE CATEGORY = '애니메이션' AND VIEW_CNT < 70;
+-- CATEGORY가 애니메이션이고 REG_DATE가 2021년보다 더 전인 데이터가 조회되는것.
+SELECT * FROM NETFLIX WHERE CATEGORY = '애니메이션' AND REG_DATE < TO_DATE('20210101','YYYYMMDD');
+-- 애니메이션인 데이터는 모두 출력이되며 VIEW_CNT가 70보다 작은 데이터들이 같이 출력된다.
+SELECT * FROM NETFLIX WHERE CATEGORY = '애니메이션' OR VIEW_CNT < 70;
+-- ------------------------------------------------
+-- 카테고리가 애니메이션이거나 영화인 데이터를 출력
+SELECT * FROM NETFLIX WHERE CATEGORY = '애니메이션' OR CATEGORY = '영화';
+-- IN 조건과 같은 의미가된다
+SELECT * FROM NETFLIX WHERE CATEGORY IN ('애니메이션','영화');
+-- ------------------------------------------------
+
+-- LIKE 조건절 : % 의 위치가 문자의 뒤에있을때, 앞에있을떄 = 첫머리글짜와 마지막글짜로 시작 끝나는 데이터를 출력하는방식.
+-- 첫 글짜가 '미'로 시작되는 데이터를 조회
+SELECT * FROM NETFLIX WHERE VIDEO_NAME LIKE '미%';
+-- 첫 글짜가 '미'로 끝나는 데이터를 조회
+SELECT * FROM NETFLIX WHERE VIDEO_NAME LIKE '%미';
+-- 가운데에 있는 작성문자를 가진 데이터를 조회 
+SELECT * FROM NETFLIX WHERE VIDEO_NAME LIKE '%의%';
+-- VIEW_CNT에 60보다 크고 70보다 작은 데이터를 조회
+SELECT * FROM NETFLIX WHERE VIEW_CNT >=60 AND VIEW_CNT <=70;
+-- 위와 동일한 의미이다. 60보다 크고 70보다 작음.
+SELECT * FROM NETFLIX WHERE VIEW_CNT BETWEEN 60 AND 70;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
