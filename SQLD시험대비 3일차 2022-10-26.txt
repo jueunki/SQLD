@@ -1,0 +1,100 @@
+**2022-10-24 SQLD 시험 대비
+
+*STEP1       INNER JOIN : 두 테이블에 공통적으로 존재하는 데이터여야지 출력이 된다.
+
+JOIN : 여러개의 테이블을 연결해주는 쿼리, 연결방식에 따라 두가지 조인으로 나눠진다.
+	 JOIN의 관계는 1 : 1이 될 수도 있고 1 : N이 될 수도 있고, N : 1이 될 수도 있다.
+
+
+
+SELECT VIDEO_NAME, CATEGORY, CAST_MEMBER, B.BIRTHDAY
+      FROM NETFLIX A, NETFLIX_CAST B
+--    FROM NETFLIX , NETFLIX_CAST 에 FROM NETFLIX A, NETFLIX_CAST B라는 alias를 붙여준다
+--    alias를 붙여주는 이유는 / JOIN을 헐 때는 컬럼앞에 이 컬럼이 어느 테이블에 속한 컬럼인지를 명시해 주기 위해서
+--    테이블명.컬럼명 이런식으로 작성을 해주어야 하는데, 그렇게되면 너무 번거롭게 작성해야하기 때문에 A.CATEGORY A.VIDEO_NAME 이런식으로 간단명료하게 작성하는것이다.
+WHERE A.VIDEO_NAME = B.VIDEO_NAME;
+--    그리고 여기에 조인쿼리가 들어간다.(공통된 커리를 찾아서 넣어주는것이다.)
+
+--    SELECT VIDEO_NAME, CATEGORY, CAST_MEMBER, B.BIRTHDAY<--B.BIRTHDAY를 넣듯 이렇게 추가도 가능하다. 
+--    만약에 다른 조건을 하나 더 주고싶다고 한다면 WHERE절 밑에 AND로 연결을해서
+--    예를들어 A.CATEGORY가 예능인 카테고리를 연결하고 싶다면
+AND A.CATEGORY = '예능';
+--    이렇게 작성해줄수도 있다.
+
+--    넷플릭스 전체 데이터를 한번 조회를 해주고
+SELECT * FROM NETFLIX_CAST;
+
+
+--    전체조회를 해서 봤을때 하나의 데이터 네임당 한명의 출연자가 등록이되어있는데
+--    하나의 작품에 여러명의 출연자가 들어가있는게 정상이므로 1 : N 관계라고 볼 수있다.
+
+--    하나의 데이터만 INSERT해본다.
+INSERT INTO NETFLIX_CAST VALUES('효리네 민박', '주은기', TO_DATE('19950113', 'YYYYMMDD'),'여');
+--    이부분을 삽입하고
+COMMIT;
+SELECT * FROM NETFLIX_CAST;
+
+-- 셀렉트한 이후 본문을 다시 실행해보면 1 : N 관계로 출력이 되는것을 확인할수있다.
+
+
+
+--본문은 이러하다.------------------------------------------------------
+SELECT A.VIDEO_NAME, A.CATEGORY, B.CAST_MEMBER, B.BIRTHDAY
+        FROM NETFLIX A, NETFLIX_CAST B
+        WHERE A.VIDEO_NAME = B.VIDEO_NAME;
+
+---------------------------------------------------------------------
+        SELECT A.VIDEO_NAME, A.CATEGORY, B.CAST_MEMBER, B.BIRTHDAY
+        FROM NETFLIX A, NETFLIX_CAST B
+        WHERE A.VIDEO_NAME = B.VIDEO_NAME
+        AND A.CATEGORY = '예능'; --이부분은 삽입해서 결과를 더 보고싶을때 사용
+---------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
